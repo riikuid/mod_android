@@ -1,13 +1,19 @@
 import 'package:gradient_borders/gradient_borders.dart';
+import 'package:mod_android/model/music/Music.dart';
 import 'package:mod_android/theme.dart';
 import 'package:flutter/material.dart';
 
 class MusicCard extends StatefulWidget {
   final bool selected;
-  final int music;
+  final int musicId;
+  final Music music;
   final Function(bool) onTap;
 
-  MusicCard({required this.selected, required this.music, required this.onTap});
+  MusicCard(
+      {required this.selected,
+      required this.musicId,
+      required this.onTap,
+      required this.music});
 
   @override
   _MusicCardState createState() => _MusicCardState();
@@ -55,7 +61,7 @@ class _MusicCardState extends State<MusicCard> {
                   ),
                   image: DecorationImage(
                     image: AssetImage(
-                      "assets/example_music.png",
+                      widget.music.urlPoster,
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -66,7 +72,7 @@ class _MusicCardState extends State<MusicCard> {
               height: 10,
             ),
             Text(
-              "Nama Music",
+              widget.music.title,
               style: primaryTextStyle.copyWith(
                 fontSize: 14,
                 fontWeight: semibold,
@@ -76,7 +82,7 @@ class _MusicCardState extends State<MusicCard> {
               height: 2,
             ),
             Text(
-              "Tulis",
+              widget.music.singer.name,
               style: primaryTextStyle.copyWith(
                 fontSize: 10,
               ),

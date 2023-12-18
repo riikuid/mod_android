@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mod_android/model/music/Music.dart';
+import 'package:mod_android/provider/music_provider.dart';
 import 'package:mod_android/theme.dart';
 import 'package:mod_android/widget/category_card.dart';
 import 'package:mod_android/widget/movie_card.dart';
@@ -14,6 +16,7 @@ class MusicPage extends StatefulWidget {
 
 class MusicPageState extends State<MusicPage> {
   int selectedMusic = 1;
+  List<Music> listMusic = MusicProvider.getMusicList().toList();
 
   void _onMusicCardTap(int music) {
     setState(() {
@@ -31,7 +34,7 @@ class MusicPageState extends State<MusicPage> {
             Row(
               children: [
                 const Icon(
-                  Icons.movie,
+                  Icons.library_music,
                   color: Colors.white,
                   size: 30,
                 ),
@@ -74,16 +77,18 @@ class MusicPageState extends State<MusicPage> {
           ),
           minItemWidth: 120,
           verticalGridSpacing: 20,
-          children: List.generate(
-            100,
-            (index) => MusicCard(
-              selected: selectedMusic == index,
-              music: index,
-              onTap: (isSelected) {
-                _onMusicCardTap(index);
-              },
-            ),
-          ),
+          children: listMusic
+              .map(
+                (music) => MusicCard(
+                  selected: selectedMusic == music.id,
+                  music: music,
+                  musicId: music.id,
+                  onTap: (isSelected) {
+                    _onMusicCardTap(music.id);
+                  },
+                ),
+              )
+              .toList(),
         ),
       );
     }

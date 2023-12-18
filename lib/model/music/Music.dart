@@ -5,12 +5,14 @@ class Music {
   late String title;
   late double duration;
   late Singer singer;
+  late String urlPoster;
 
   Music({
     required this.id,
     required this.title,
     required this.duration,
     required this.singer,
+    required this.urlPoster,
   });
 
   Music.fromJson(Map<String, dynamic> json) {
@@ -18,5 +20,6 @@ class Music {
     title = json['title'];
     duration = json['duration'];
     singer = Singer.fromJson(json['singer']);
+    urlPoster = json['url_poster'];
   }
 }
