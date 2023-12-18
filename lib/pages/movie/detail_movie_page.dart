@@ -40,10 +40,9 @@ class DetailMoviePage extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
           },
-          child: const Icon(
-            Icons.home,
-            size: 25,
-            color: Colors.white,
+          child: Image.asset(
+            "assets/icon_back.png",
+            height: 25,
           ),
         ),
         elevation: 0,
@@ -167,6 +166,7 @@ class DetailMoviePage extends StatelessWidget {
                             const Icon(
                               Icons.play_arrow_rounded,
                               size: 30,
+                              color: Colors.white,
                             ),
                             const SizedBox(
                               width: 5,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mod_android/model/article/Article.dart';
+import 'package:mod_android/pages/article/detail_article_page.dart';
 import 'package:mod_android/theme.dart';
 
 class ArticleCard extends StatelessWidget {
@@ -11,8 +12,14 @@ class ArticleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.popAndPushNamed(context, '/detail-article',
-            arguments: article);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: ((context) => DetailArticlePage(
+                  article: article,
+                )),
+          ),
+        );
       },
       child: Column(
         children: [

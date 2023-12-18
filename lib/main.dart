@@ -35,7 +35,6 @@ class MyApp extends StatelessWidget {
           '/detail-movie': (context) => const DetailMoviePage(),
           '/music': (context) => const MusicPage(),
           '/article': (context) => const ArticlePage(),
-          '/article-detail': (context) => DetailArticlePage(),
         },
         title: 'Multimedia on Demand',
       ),

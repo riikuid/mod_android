@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:mod_android/model/article/Article.dart';
+import 'package:mod_android/pages/article/detail_article_page.dart';
 import 'package:mod_android/provider/article_provider.dart';
 import 'package:mod_android/theme.dart';
 import 'package:mod_android/widget/car_status_card.dart';
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   List<Article> carouselList =
-      ArticleProvider.getArticleList().take(4).toList();
+      ArticleProvider.getArticleList().take(3).toList();
   int _currentIndex = 0;
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,65 +116,78 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     items: carouselList
                                         .map(
-                                          (item) => Container(
-                                            decoration: BoxDecoration(
-                                              color: statusCardColor,
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                  item.thumbanail,
+                                          (item) => GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: ((context) =>
+                                                      DetailArticlePage(
+                                                        article: item,
+                                                      )),
                                                 ),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
+                                              );
+                                            },
                                             child: Container(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 0, 40, 55),
-                                              width: double.infinity,
-                                              height: double.infinity,
                                               decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors
-                                                        .transparent, // Transparan di tengah
-                                                    Colors
-                                                        .transparent, // Transparan di tengah
-                                                    baseMovieGradientColor
-                                                        .withOpacity(
-                                                            0.5), // Warna hitam dengan transparansi 50%
-                                                    baseMovieGradientColor
-                                                        .withOpacity(
-                                                            0.8), // Warna hitam dengan transparansi 50%
-                                                    baseMovieGradientColor
-                                                        .withOpacity(
-                                                            1), // Warna hitam dengan transparansi 50%
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
+                                                color: statusCardColor,
+                                                image: DecorationImage(
+                                                  image: AssetImage(
+                                                    item.thumbanail,
+                                                  ),
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    item.title,
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: primaryTextStyle
-                                                        .copyWith(
-                                                      fontSize: 25,
-                                                      fontWeight: bold,
-                                                    ),
-                                                  )
-                                                ],
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        20, 0, 40, 55),
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors
+                                                          .transparent, // Transparan di tengah
+                                                      Colors
+                                                          .transparent, // Transparan di tengah
+                                                      baseMovieGradientColor
+                                                          .withOpacity(
+                                                              0.5), // Warna hitam dengan transparansi 50%
+                                                      baseMovieGradientColor
+                                                          .withOpacity(
+                                                              0.8), // Warna hitam dengan transparansi 50%
+                                                      baseMovieGradientColor
+                                                          .withOpacity(
+                                                              1), // Warna hitam dengan transparansi 50%
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                  ),
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      item.title,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: primaryTextStyle
+                                                          .copyWith(
+                                                        fontSize: 25,
+                                                        fontWeight: bold,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
+                                              // width: 805,
+                                              // height: 374,
                                             ),
-                                            // width: 805,
-                                            // height: 374,
                                           ),
                                         )
                                         .toList(),
@@ -218,18 +232,20 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.pushNamed(context, '/movie');
                                 },
-                                child: Container(
-                                  width: 200,
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/button_movie.png",
+                                child: AspectRatio(
+                                  aspectRatio: 156 / 112,
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                          "assets/button_movie.png",
+                                        ),
+                                        fit: BoxFit.cover,
                                       ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(15.0),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -243,18 +259,20 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.pushNamed(context, '/music');
                                 },
-                                child: Container(
-                                  width: 200,
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/button_music.png",
+                                child: AspectRatio(
+                                  aspectRatio: 156 / 112,
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                          "assets/button_music.png",
+                                        ),
+                                        fit: BoxFit.cover,
                                       ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(15.0),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -268,18 +286,20 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.pushNamed(context, "/article");
                                 },
-                                child: Container(
-                                  width: 200,
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/button_kai.png",
+                                child: AspectRatio(
+                                  aspectRatio: 156 / 112,
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                          "assets/button_kai.png",
+                                        ),
+                                        fit: BoxFit.cover,
                                       ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12.0),
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12.0),
+                                      ),
                                     ),
                                   ),
                                 ),

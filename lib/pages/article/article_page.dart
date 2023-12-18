@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:mod_android/model/article/Article.dart';
+import 'package:mod_android/pages/article/detail_article_page.dart';
 import 'package:mod_android/provider/article_provider.dart';
 import 'package:mod_android/theme.dart';
 import 'package:mod_android/widget/article_card.dart';
@@ -11,15 +12,16 @@ import 'package:responsive_grid_list/responsive_grid_list.dart';
 class ArticlePage extends StatefulWidget {
   const ArticlePage({super.key});
 
-  @override
   State<ArticlePage> createState() => _ArticlePageState();
 }
 
 class _ArticlePageState extends State<ArticlePage> {
   List<Article> articleList = ArticleProvider.getArticleList();
+  List<Article> articleCarousel =
+      ArticleProvider.getArticleList().take(3).toList();
+
   int _currentIndex = 0;
 
-  @override
   Widget build(BuildContext context) {
     Widget header() {
       return Column(
@@ -55,7 +57,7 @@ class _ArticlePageState extends State<ArticlePage> {
       );
     }
 
-    Widget movieList() {
+    Widget articleListSection() {
       return ResponsiveGridList(
         listViewBuilderOptions: ListViewBuilderOptions(
           padding: const EdgeInsets.only(bottom: 20),
@@ -121,6 +123,7 @@ class _ArticlePageState extends State<ArticlePage> {
         ),
       ),
       body: Container(
+        height: double.infinity,
         decoration: BoxDecoration(
           color: backgroundPrimary,
         ),
@@ -155,90 +158,102 @@ class _ArticlePageState extends State<ArticlePage> {
                       },
                       // clipBehavior: Clip.antiAlias,
                     ),
-                    items: articleList
+                    items: articleCarousel
                         .map(
                           (item) => Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 310,
-                                    decoration: BoxDecoration(
-                                      color: statusCardColor,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(12.0),
-                                      ),
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                          item.thumbanail,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: ((context) => DetailArticlePage(
+                                          article: item,
+                                        )),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height: 310,
+                                      decoration: BoxDecoration(
+                                        color: statusCardColor,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(12.0),
                                         ),
-                                        fit: BoxFit.cover,
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                            item.thumbanail,
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 30,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        item.title,
-                                        style: primaryTextStyle.copyWith(
-                                          fontSize: 28,
-                                          fontWeight: semibold,
-                                        ),
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/kai_logo2.png",
-                                            height: 20,
-                                            fit: BoxFit.cover,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            DateFormat(
-                                                    'EEEE, dd MMMM yyyy', 'id')
-                                                .format(
-                                              item.createdAt,
-                                            ),
-                                            style: primaryTextStyle.copyWith(
-                                              fontWeight: regular,
-                                              fontSize: 14,
-                                              fontStyle: FontStyle.italic,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        item.description,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 5,
-                                        style: primaryTextStyle.copyWith(
-                                          fontSize: 16,
-                                          fontWeight: light,
-                                        ),
-                                      )
-                                    ],
+                                  const SizedBox(
+                                    width: 30,
                                   ),
-                                )
-                              ],
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          item.title,
+                                          style: primaryTextStyle.copyWith(
+                                            fontSize: 28,
+                                            fontWeight: semibold,
+                                          ),
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/kai_logo2.png",
+                                              height: 20,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              DateFormat('EEEE, dd MMMM yyyy',
+                                                      'id')
+                                                  .format(
+                                                item.createdAt,
+                                              ),
+                                              style: primaryTextStyle.copyWith(
+                                                fontWeight: regular,
+                                                fontSize: 14,
+                                                fontStyle: FontStyle.italic,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          item.description,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 5,
+                                          style: primaryTextStyle.copyWith(
+                                            fontSize: 16,
+                                            fontWeight: light,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         )
@@ -248,7 +263,7 @@ class _ArticlePageState extends State<ArticlePage> {
                 height: 20,
               ),
               DotsIndicator(
-                dotsCount: articleList.length,
+                dotsCount: articleCarousel.length,
                 position: _currentIndex,
                 decorator: DotsDecorator(
                   size: Size(7, 7),
@@ -275,7 +290,7 @@ class _ArticlePageState extends State<ArticlePage> {
               const SizedBox(
                 height: 25,
               ),
-              movieList(),
+              articleListSection(),
               // GridView.builder(gridDelegate: gridDelegate, itemBuilder: itemBuilder)
 
               // Container(

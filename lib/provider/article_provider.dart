@@ -60,13 +60,4 @@ class ArticleProvider with ChangeNotifier {
 
     return jsonArticleList.map((json) => Article.fromJson(json)).toList();
   }
-
-  // Future<void> getarticles() async {
-  //   try {
-  //     List<Article> articles = await articleservice().getArticle();
-  //     _articles = articles;
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 }
