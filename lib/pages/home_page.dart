@@ -233,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.pushNamed(context, '/movie');
                                 },
                                 child: AspectRatio(
-                                  aspectRatio: 156 / 112,
+                                  aspectRatio: 1.3693693694 / 1,
                                   child: Container(
                                     decoration: const BoxDecoration(
                                       image: DecorationImage(
@@ -244,7 +244,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(15.0),
+                                        Radius.circular(30.0),
                                       ),
                                     ),
                                   ),
@@ -260,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.pushNamed(context, '/music');
                                 },
                                 child: AspectRatio(
-                                  aspectRatio: 156 / 112,
+                                  aspectRatio: 1.3693693694 / 1,
                                   child: Container(
                                     decoration: const BoxDecoration(
                                       image: DecorationImage(
@@ -271,7 +271,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(15.0),
+                                        Radius.circular(30.0),
                                       ),
                                     ),
                                   ),
@@ -287,7 +287,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.pushNamed(context, "/article");
                                 },
                                 child: AspectRatio(
-                                  aspectRatio: 156 / 112,
+                                  aspectRatio: 1.3693693694 / 1,
                                   child: Container(
                                     decoration: const BoxDecoration(
                                       image: DecorationImage(
@@ -298,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(12.0),
+                                        Radius.circular(30.0),
                                       ),
                                     ),
                                   ),

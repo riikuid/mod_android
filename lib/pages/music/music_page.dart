@@ -18,9 +18,9 @@ class MusicPageState extends State<MusicPage> {
   int selectedMusic = 1;
   List<Music> listMusic = MusicProvider.getMusicList().toList();
 
-  void _onMusicCardTap(int music) {
+  void _onMusicCardTap(Music music) {
     setState(() {
-      selectedMusic = music;
+      selectedMusic = music.id;
     });
   }
 
@@ -84,7 +84,7 @@ class MusicPageState extends State<MusicPage> {
                   music: music,
                   musicId: music.id,
                   onTap: (isSelected) {
-                    _onMusicCardTap(music.id);
+                    _onMusicCardTap(music);
                   },
                 ),
               )
