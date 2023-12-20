@@ -73,6 +73,8 @@ class _MusicCardState extends State<MusicCard> {
             ),
             Text(
               widget.music.title,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
               style: primaryTextStyle.copyWith(
                 fontSize: 14,
                 fontWeight: semibold,

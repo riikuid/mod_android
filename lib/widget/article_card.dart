@@ -22,6 +22,7 @@ class ArticleCard extends StatelessWidget {
         );
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AspectRatio(
             aspectRatio: 233 / 150,
@@ -31,8 +32,8 @@ class ArticleCard extends StatelessWidget {
                   Radius.circular(12.0),
                 ),
                 image: DecorationImage(
-                  image: AssetImage(
-                    article.thumbanail,
+                  image: NetworkImage(
+                    urlApi + article.thumbanail,
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -43,6 +44,7 @@ class ArticleCard extends StatelessWidget {
             height: 15,
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 height: 5,

@@ -1,4 +1,6 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:mod_android/model/music/Music.dart';
 import 'package:mod_android/provider/music_provider.dart';
 import 'package:mod_android/theme.dart';
@@ -15,13 +17,53 @@ class MusicPage extends StatefulWidget {
 }
 
 class MusicPageState extends State<MusicPage> {
-  int selectedMusic = 1;
+  String musicUrl = "assets/music/niki.mp3"; // Insert your music URL
+  String thumbnailImgUrl =
+      "assets/example_music.png"; // Insert your thumbnail URL
+  AudioPlayer player = AudioPlayer();
+  bool loaded = false;
+  bool playing = false;
+  int selectedMusic = 0;
+
   List<Music> listMusic = MusicProvider.getMusicList().toList();
 
   void _onMusicCardTap(Music music) {
     setState(() {
       selectedMusic = music.id;
     });
+  }
+
+  void loadMusic() async {
+    await player.setAudioSource(AudioSource.asset(musicUrl));
+    setState(() {
+      loaded = true;
+    });
+  }
+
+  void playMusic() async {
+    setState(() {
+      playing = true;
+    });
+    await player.play();
+  }
+
+  void pauseMusic() async {
+    setState(() {
+      playing = false;
+    });
+    await player.pause();
+  }
+
+  @override
+  void initState() {
+    loadMusic();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 
   @override
@@ -75,7 +117,7 @@ class MusicPageState extends State<MusicPage> {
             primary: false,
             shrinkWrap: true,
           ),
-          minItemWidth: 120,
+          minItemWidth: 150,
           verticalGridSpacing: 20,
           children: listMusic
               .map(
@@ -143,24 +185,14 @@ class MusicPageState extends State<MusicPage> {
       body: Container(
         decoration: BoxDecoration(
           color: backgroundPrimary,
-          // image: DecorationImage(
-          //   image: AssetImage(
-          //     "assets/bg_primary.png",
-          //   ),
-          //   alignment: Alignment.topCenter,
-          //   fit: BoxFit.cover,
-          // ),
         ),
-        // padding: const EdgeInsets.only(
-        //   // top: 10,
-        //   right: 20,
-        //   left: 20,
-        // ),
         child: SingleChildScrollView(
           controller: ScrollController(),
           child: Column(
             children: [
+              // musicPlayer(),
               Container(
+                height: 440,
                 padding: const EdgeInsets.fromLTRB(60, 100, 60, 60),
                 decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -174,47 +206,188 @@ class MusicPageState extends State<MusicPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 280,
-                      width: 280,
-                      decoration: BoxDecoration(
-                        image: const DecorationImage(
-                          image: AssetImage(
-                            "assets/example_music.png",
+                    AspectRatio(
+                      aspectRatio: 280 / 280,
+                      child: Container(
+                        // height: 280,
+                        // width: 280,
+                        decoration: BoxDecoration(
+                          image: const DecorationImage(
+                            image: AssetImage(
+                              "assets/example_music.png",
+                            ),
+                            fit: BoxFit.cover,
                           ),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(12.0),
-                        ),
-                        border: Border.all(
-                          width: 20.0,
-                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(12.0),
+                          ),
+                          border: Border.all(
+                            width: 20.0,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(
                       width: 40,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Hati - Hati di Jalan",
-                          style: primaryTextStyle.copyWith(
-                            fontSize: 45,
-                            fontWeight: FontWeight.w900,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Hati - Hati di Jalan Kami Datang e",
+                                style: primaryTextStyle.copyWith(
+                                  fontSize: 45,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              Text(
+                                "Orang Paling Tulus",
+                                style: primaryTextStyle.copyWith(
+                                  fontSize: 25,
+                                  fontWeight: regular,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Text(
-                          "Orang Paling Tulus",
-                          style: primaryTextStyle.copyWith(
-                            fontSize: 25,
-                            fontWeight: regular,
-                          ),
-                        ),
-                      ],
-                    ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 1.8,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    IconButton(
+                                        onPressed: loaded
+                                            ? () async {
+                                                if (player.position.inSeconds >=
+                                                    10) {
+                                                  await player.seek(Duration(
+                                                      seconds: player.position
+                                                              .inSeconds -
+                                                          10));
+                                                } else {
+                                                  await player.seek(
+                                                      const Duration(
+                                                          seconds: 0));
+                                                }
+                                              }
+                                            : null,
+                                        icon: const Icon(
+                                          Icons.fast_rewind_rounded,
+                                          color: Colors.white,
+                                          size: 30,
+                                        )),
+                                    IconButton(
+                                        onPressed: loaded
+                                            ? () {
+                                                if (playing) {
+                                                  pauseMusic();
+                                                } else {
+                                                  playMusic();
+                                                }
+                                              }
+                                            : null,
+                                        icon: Icon(
+                                          playing
+                                              ? Icons.pause_rounded
+                                              : Icons.play_arrow_rounded,
+                                          color: Colors.white,
+                                          size: 50,
+                                        )),
+                                    IconButton(
+                                        onPressed: loaded
+                                            ? () async {
+                                                if (player.position.inSeconds +
+                                                        10 <=
+                                                    player
+                                                        .duration!.inSeconds) {
+                                                  await player.seek(Duration(
+                                                      seconds: player.position
+                                                              .inSeconds +
+                                                          10));
+                                                } else {
+                                                  await player.seek(
+                                                      const Duration(
+                                                          seconds: 0));
+                                                }
+                                              }
+                                            : null,
+                                        icon: const Icon(
+                                          Icons.fast_forward_rounded,
+                                          color: Colors.white,
+                                          size: 30,
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                StreamBuilder(
+                                    stream: player.positionStream,
+                                    builder: (context, snapshot1) {
+                                      final Duration duration = loaded
+                                          ? snapshot1.data as Duration
+                                          : const Duration(seconds: 0);
+                                      return StreamBuilder(
+                                          stream: player.bufferedPositionStream,
+                                          builder: (context, snapshot2) {
+                                            final Duration bufferedDuration =
+                                                loaded
+                                                    ? snapshot2.data as Duration
+                                                    : const Duration(
+                                                        seconds: 0);
+                                            return Container(
+                                              height: 30,
+                                              // width: double
+                                              //     .infinity,
+                                              child: ProgressBar(
+                                                barHeight: 3,
+                                                progress: duration,
+                                                total: player.duration ??
+                                                    const Duration(seconds: 0),
+                                                buffered: bufferedDuration,
+                                                timeLabelPadding: -1,
+                                                timeLabelTextStyle:
+                                                    primaryTextStyle.copyWith(
+                                                  fontSize: 14,
+                                                ),
+                                                progressBarColor: Colors.white,
+                                                baseBarColor: Colors.white
+                                                    .withOpacity(0.3),
+                                                bufferedBarColor: Colors.white
+                                                    .withOpacity(0.3),
+                                                thumbColor: Colors.white,
+                                                thumbRadius: 5,
+                                                onSeek: loaded
+                                                    ? (duration) async {
+                                                        await player
+                                                            .seek(duration);
+                                                      }
+                                                    : null,
+                                              ),
+                                            );
+                                          });
+                                    }),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),

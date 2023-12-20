@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mod_android/model/article/Article.dart';
 import 'package:mod_android/pages/article/article_page.dart';
-import 'package:mod_android/pages/article/detail_article_page.dart';
 import 'package:mod_android/pages/home_page.dart';
 import 'package:mod_android/pages/movie/detail_movie_page.dart';
 import 'package:mod_android/pages/movie/movie_page.dart';

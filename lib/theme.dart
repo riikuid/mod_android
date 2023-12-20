@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+String urlApi = 'http://10.0.2.2:8000/';
+
 LinearGradient primaryGradient = const LinearGradient(
   colors: [Color(0xff6652ee), Color(0xffe04d6e)],
   stops: [0.2, 0.7],

@@ -74,8 +74,8 @@ class DetailArticlePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: backgroundPrimary,
                   image: DecorationImage(
-                    image: AssetImage(
-                      article.thumbanail,
+                    image: NetworkImage(
+                      urlApi + article.thumbanail,
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -128,7 +128,10 @@ class DetailArticlePage extends StatelessWidget {
                   fontWeight: medium,
                   fontSize: 20,
                 ),
-              )
+              ),
+              const SizedBox(
+                height: 30,
+              ),
             ],
           ),
         ),

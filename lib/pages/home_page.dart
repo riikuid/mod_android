@@ -6,6 +6,7 @@ import 'package:mod_android/pages/article/detail_article_page.dart';
 import 'package:mod_android/provider/article_provider.dart';
 import 'package:mod_android/theme.dart';
 import 'package:mod_android/widget/car_status_card.dart';
+import 'package:mod_android/widget/home_page_carousel.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,10 +17,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  List<Article> carouselList =
-      ArticleProvider.getArticleList().take(3).toList();
+  late List<Article> articleList;
+  late List<Article> articleCarousel = [];
+
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch articles once when the widget is initialized
+    Provider.of<ArticleProvider>(context, listen: false)
+        .getArticles()
+        .then((_) {
+      articleList =
+          Provider.of<ArticleProvider>(context, listen: false).articles;
+      articleCarousel = articleList.take(4).toList();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundPrimary,
@@ -88,138 +104,27 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12.0),
-                            ),
-                            child: Stack(
-                              alignment: Alignment.bottomLeft,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12.0),
-                                    ),
-                                    color: statusCardColor,
-                                  ),
-                                  child: CarouselSlider(
-                                    options: CarouselOptions(
-                                      height: double.infinity,
-                                      viewportFraction: 1.0,
-                                      enlargeCenterPage: false,
-                                      autoPlay: true,
-                                      onPageChanged: (index, reason) {
-                                        setState(() {
-                                          _currentIndex = index;
-                                        });
-                                      },
-                                    ),
-                                    items: carouselList
-                                        .map(
-                                          (item) => GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      DetailArticlePage(
-                                                        article: item,
-                                                      )),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: statusCardColor,
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    item.thumbanail,
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        20, 0, 40, 55),
-                                                width: double.infinity,
-                                                height: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    colors: [
-                                                      Colors
-                                                          .transparent, // Transparan di tengah
-                                                      Colors
-                                                          .transparent, // Transparan di tengah
-                                                      baseMovieGradientColor
-                                                          .withOpacity(
-                                                              0.5), // Warna hitam dengan transparansi 50%
-                                                      baseMovieGradientColor
-                                                          .withOpacity(
-                                                              0.8), // Warna hitam dengan transparansi 50%
-                                                      baseMovieGradientColor
-                                                          .withOpacity(
-                                                              1), // Warna hitam dengan transparansi 50%
-                                                    ],
-                                                    begin: Alignment.topCenter,
-                                                    end: Alignment.bottomCenter,
-                                                  ),
-                                                ),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      item.title,
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: primaryTextStyle
-                                                          .copyWith(
-                                                        fontSize: 25,
-                                                        fontWeight: bold,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              // width: 805,
-                                              // height: 374,
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    bottom: 20.0,
-                                    left: 20,
-                                  ),
-                                  child: DotsIndicator(
-                                    dotsCount: carouselList.length,
-                                    position: _currentIndex,
-                                    decorator: DotsDecorator(
-                                      size: Size(7, 7),
-                                      activeSize: Size(25, 7),
-                                      activeShape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            5.0), // Radius sudut dot untuk bentuk persegi
-                                      ),
-                                      color: Colors.grey,
-                                      activeColor: Color(0xffe04d6e),
-                                      spacing: EdgeInsets.symmetric(
-                                        horizontal: 5,
-                                        vertical: 10,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          child: FutureBuilder(
+                              future: Provider.of<ArticleProvider>(context,
+                                      listen: false)
+                                  .getArticles(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  // Show a loading indicator or circular progress while waiting for data
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  // Show an error message if there's an error
+                                  return Center(
+                                    child: Text('Error loading data'),
+                                  );
+                                } else {
+                                  return HomePageCarousel(
+                                      articles: articleCarousel);
+                                }
+                              }),
                         ),
                         const SizedBox(
                           width: 20,

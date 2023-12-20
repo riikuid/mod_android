@@ -35,7 +35,7 @@ class Article {
       "updated_at": "2023-11-27T02:18:16.000000Z"
     },
     {
-      "id": 2,
+      "id": 3,
       "title":
           "Cara Beli Tiket Kereta Api Libur Natal dan Tahun Baru di Access by KAI",
       "description":
@@ -47,7 +47,7 @@ class Article {
       "updated_at": "2023-11-27T02:22:13.000000Z"
     },
     {
-      "id": 3,
+      "id": 4,
       "title":
           "KAI Ingatkan Penumpang Agar Membeli Tiket Kereta Sesuai Tujuan, Bakal Kena Sanksi karena Kursi Penumpang Sering Dobel",
       "description":

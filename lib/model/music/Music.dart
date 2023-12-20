@@ -23,6 +23,6 @@ class Music {
     duration = json['duration'];
     singer = Singer.fromJson(json['singer']);
     urlPoster = json['url_poster'];
-    urlPoster = json['url_music'];
+    urlMusic = json['url_music'];
   }
 }
